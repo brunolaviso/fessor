@@ -1,48 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PageHeader } from "../../components/PageHeader";
 import { TeacherItem, Teacher }from "../../components/TeacherItem";
 import { Input } from "../../components/Input";
 import { Select } from "../../components/Select";
 
 import "./styles.css";
-
-const teachers: Teacher[] = [
-  {
-    id: 1,
-    subject: "Biologia",
-    cost: 20,
-    name: "João",
-    avatar:
-      "https://avatars.githubusercontent.com/u/62860172?s=460&u=1b6b8b0b9b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0&v=4",
-    whatsapp: "123456789",
-    bio: "Lorem ipsum dolor sit amet",
-  },
-  {
-    id: 2,
-    subject: "Matemática",
-    cost: 40,
-    name: "Bruno",
-    avatar:
-      "https://avatars.githubusercontent.com/u/62860172?s=460&u=1b6b8b0b9b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0&v=4",
-    whatsapp: "123456789",
-    bio: "Lorem ipsum dolor sit amet",
-  },
-  {
-    id: 3,
-    subject: "História",
-    cost: 35,
-    name: "Leonardo",
-    avatar:
-      "https://avatars.githubusercontent.com/u/62860172?s=460&u=1b6b8b0b9b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0&v=4",
-    whatsapp: "123456789",
-    bio: "Lorem ipsum dolor sit amet",
-  },
-];
+import api from "../../services/api";
 
 export function TeacherList() {
   const [subject, setSubject] = useState("");
   const [week_day, setWeek_day] = useState("");
   const [time, setTime] = useState("");
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
+
+  useEffect(() => {
+    api.get("teachers").then(({ data: { records } }) => {
+      console.log(records);
+    })
+  }, [])
 
   function searchTeachers(e: React.FormEvent) {
     e.preventDefault();
@@ -102,9 +77,9 @@ export function TeacherList() {
         </form>
       </PageHeader>
       <main>
-        {teachers.map((teacher: Teacher) => {
-          return <TeacherItem key={teacher.id} teacher={teacher} />;
-        })}
+        {teachers.map((teacher: Teacher) => 
+          <TeacherItem key={teacher.id} teacher={teacher} />
+        )}
       </main>
     </div>
   );
