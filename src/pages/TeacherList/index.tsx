@@ -15,7 +15,8 @@ export function TeacherList() {
 
   useEffect(() => {
     api.get("teachers").then(({ data: { records } }) => {
-      console.log(records);
+      const teachers = records.map((record: any) => record.fields);
+      setTeachers(teachers);
     })
   }, [])
 
@@ -77,6 +78,7 @@ export function TeacherList() {
         </form>
       </PageHeader>
       <main>
+        {teachers.length === 0 && <p>Carregando</p>}
         {teachers.map((teacher: Teacher) => 
           <TeacherItem key={teacher.id} teacher={teacher} />
         )}
