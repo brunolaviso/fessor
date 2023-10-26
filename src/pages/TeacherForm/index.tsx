@@ -8,6 +8,7 @@ import { Select } from "../../components/Select"
 import warningIcon from "../../assets/images/icons/warning.svg"
 
 import "./styles.css"
+import api from "../../services/api"
 
 export function TeacherForm() {
   const navigate = useNavigate()
@@ -42,6 +43,18 @@ export function TeacherForm() {
 
   function handleCreateClass(e: FormEvent) {
     e.preventDefault()
+
+    api.post('teachers', {
+      fields: {
+        name,
+        avatar,
+        whatsapp,
+        bio,
+        subject,
+        cost: Number(cost),
+      }
+    })
+
     console.log({
       name,
       avatar,
@@ -51,6 +64,7 @@ export function TeacherForm() {
       cost,
       scheduleItems,
     })
+
     navigate("/")
   }
 
